@@ -9,6 +9,8 @@ verify_ssl = true
 selenium = "*"
 webdriver-manager = "*"
 pytest = "*"
+pytest-html = "*"
+allure-pytest = "*"
 
 [requires]
 python_version = "3.8"
