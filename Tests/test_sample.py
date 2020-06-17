@@ -3,26 +3,32 @@ from webdriver_manager.chrome import ChromeDriverManager
 import pytest
 
 
-def test_setup():
-    global driver
-    driver = webdriver.Chrome(ChromeDriverManager().install())
-    driver.maximize_window()
+class TestSample():
+    @pytest.fixture()
+    def test_setup(self):
+        global driver
+        driver = webdriver.Chrome(ChromeDriverManager().install())
+        driver.maximize_window()
+        yield
+        driver.close()
+        driver.quit()
+        print("Test completed!")
 
-def test_login():
-    driver.get("https://opensource-demo.orangehrmlive.com/")
 
-    driver.find_element_by_id('txtUsername').clear()
-    driver.find_element_by_id('txtUsername').send_keys('admin')
+    def test_valid_login(self,test_setup):
+        driver.get("https://opensource-demo.orangehrmlive.com/")
 
-    driver.find_element_by_id('txtPassword').clear()
-    driver.find_element_by_id('txtPassword').send_keys('admin123')
+        driver.find_element_by_id('txtUsername').clear()
+        driver.find_element_by_id('txtUsername').send_keys('admin')
 
-    driver.find_element_by_id('btnLogin').click()
+        driver.find_element_by_id('txtPassword').clear()
+        driver.find_element_by_id('txtPassword').send_keys('admin123')
 
-    assert driver.title == 'OrangeHRM'
+        driver.find_element_by_id('btnLogin').click()
 
-def test_teardown():
-    driver.close()
-    driver.quit()
+        assert driver.title == 'OrangeHRM'
 
-    print("Test completed!")
+    #def test_teardown():
+    #    driver.close()
+    #    driver.quit()
+    #    print("Test completed!")
